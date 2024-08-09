@@ -1,202 +1,213 @@
-.sign-up-panel{
-    background-color: #0066FF;
-    height: 100vh;
-    width: 100vw;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: rgb(124 124 124);
-    
-    .sign-up-container{
-        height: 530px;
-        background-color: white;
-        width: auto;
-        border-radius: 10px;
-        display: flex;
-        overflow: hidden;
-        box-shadow: 0px 0px 28px -10px black;
-    }
-    .left-panel, .right-panel{
-        height: 100%;
-        width: 410px;
-        padding: 20px;
-        box-sizing: border-box;
-    }
-    .left-panel{
-        background-image: url("../Assests/logo1.png");
-        background-size: 300px;
-        background-position: center;
-        background-repeat: no-repeat;
-        background-color: #0066ff1f;
-    }
-    .title-section{
-        margin-top: 40px;
-    }
-    h2, h5{
-        margin: 0;
-    }
-    h2{
-        color: rgb(87 87 87);
-    }
-    .form-container{
-        margin: 10px 0px;
-    }
-    .form-container input{
-        margin: 7px 0px 20px;
-    }
-    .field-container button{
-        background-color: #0066ff;
-        margin: 7px 0px;
-        width: 100%;
-        transition: none;
-        height: 37px;
-    }
-    .field-container button:hover{
-        background-color: #0460e9;
-    }
-    .field-container button:active{
-        background-color: #1873fa;
-    }
-    .p-inputtext{
-        padding: 8px 8px;
-    }
-    .p-inputtext:focus{
-        box-shadow: none;
-    }
-    
-    .p-inputtext:active,.p-inputtext:hover, .p-inputtext:focus{
-        border-color: #1873fa;
-    }
-    label{
-        font-size: 13px;
-        font-weight: 700;
-    }
-    .field-container .p-button .p-button-label {
-        font-size: 12px;
-        transition: none ;
-    }
-    .field-container  .p-button:focus {
-        box-shadow: none;
-    }
-    .p-divider.p-divider-horizontal .p-divider-content {
-        font-size: 12px;
-    }
-    .form-container .log-in-btn{
-        background-color: #ffffff;
-        color: #0066FF;
-        border-color: #1873fa;
-        width: 100%;
-        margin: 7px 0px;
-        width: 100%;
-        transition: none;
-        height: 37px;
-    
-    }
-    
-    .form-container .log-in-btn:hover{
-        background-color: #ffffff;
-    }
-    .form-container .log-in-btn:active{
-        background-color: #0460e9;
-        color: white;
-    }
-    .p-password svg{
-        outline: none;
-    }
-    .p-icon-field > .p-input-icon {
-        top: 34%;
-    }
-    .custom-otp-input-sample {
-        width: 50px;
-        height: 40px;
-        border: 1px solid;
-        font-size: 24px;
-        appearance: none;
-        text-align: center;
-        transition: all 0.2s;
-        border-radius: 0;
-        background: transparent;
-        outline-offset: -2px;
-        outline-color: transparent;
-        border-right: 0 none;
-        transition: outline-color 0.3s;
-        border-color: #9ca3af;
-        color: rgb(124 124 124);
-        outline: none !important;
+.sign-up-panel {
+  background-color: #e6e1e0;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: rgb(124 124 124);
 
+  .sign-up-container {
+    height: 530px;
+    background-color: white;
+    width: auto;
+    border-radius: 10px;
+    display: flex;
+    overflow: hidden;
+    box-shadow: 0px 0px 28px -10px black;
+  }
+  .left-panel,
+  .right-panel {
+    height: 100%;
+    width: 410px;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+  .left-panel {
+    background-image: url("../Assests/logo1.png");
+    background-size: 300px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: #0066ff1f;
+  }
+  .title-section {
+    margin-top: 40px;
+  }
+  h2,
+  h5 {
+    margin: 0;
+  }
+  h2 {
+    color: rgb(87 87 87);
+  }
+  .form-container {
+    margin: 10px 0px;
+  }
+  .form-container input {
+    margin: 7px 0px 20px;
+  }
+  .field-container button {
+    background-color: #0066ff;
+    margin: 7px 0px;
+    width: 100%;
+    transition: none;
+    height: 37px;
+  }
+  .field-container button:hover {
+    background-color: #0460e9;
+  }
+  .field-container button:active {
+    background-color: #1873fa;
+  }
+  .p-inputtext {
+    padding: 8px 8px;
+  }
+  .p-inputtext:focus {
+    box-shadow: none;
+  }
+
+  .p-inputtext:active,
+  .p-inputtext:hover,
+  .p-inputtext:focus {
+    border-color: #1873fa;
+  }
+  label {
+    font-size: 13px;
+    font-weight: 700;
+  }
+  .field-container .p-button .p-button-label {
+    font-size: 12px;
+    transition: none;
+  }
+  .field-container .p-button:focus {
+    box-shadow: none;
+  }
+  .p-divider.p-divider-horizontal .p-divider-content {
+    font-size: 12px;
+  }
+  .form-container .log-in-btn {
+    background-color: #ffffff;
+    color: #0066ff;
+    border-color: #1873fa;
+    width: 100%;
+    margin: 7px 0px;
+    width: 100%;
+    transition: none;
+    height: 37px;
+  }
+
+  .form-container .log-in-btn:hover {
+    background-color: #ffffff;
+  }
+  .form-container .log-in-btn:active {
+    background-color: #0460e9;
+    color: white;
+  }
+  .p-password svg {
+    outline: none;
+  }
+  .p-icon-field > .p-input-icon {
+    top: 34%;
+  }
+  .custom-otp-input-sample {
+    width: 50px;
+    height: 40px;
+    border: 1px solid;
+    font-size: 24px;
+    appearance: none;
+    text-align: center;
+    transition: all 0.2s;
+    border-radius: 0;
+    background: transparent;
+    outline-offset: -2px;
+    outline-color: transparent;
+    border-right: 0 none;
+    transition: outline-color 0.3s;
+    border-color: #9ca3af;
+    color: rgb(124 124 124);
+    outline: none !important;
+  }
+  .sign-up-panel
+    input:not(
+      [type="image" i],
+      [type="range" i],
+      [type="checkbox" i],
+      [type="radio" i]
+    ),
+  .sign-up-panel .custom-otp-input-sample:focus-within {
+    outline: none !important;
+    overflow: hidden !important;
+  }
+  .custom-otp-input-sample:first-child,
+  .custom-otp-input-sample:nth-child(5) {
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+  }
+  .field-container {
+    height: 230px;
+  }
+  .otp-container {
+    padding: 35px 0px 0px;
+    input {
+      margin: 7px 0px 35px;
     }
-    .sign-up-panel input:not([type="image" i], [type="range" i], [type="checkbox" i], [type="radio" i]), .sign-up-panel .custom-otp-input-sample:focus-within{
-        outline: none !important;
-        overflow: hidden !important;
+    .p-inputotp div {
+      padding: 0px 27px;
+      top: -12px;
+      position: relative;
     }
-    .custom-otp-input-sample:first-child, .custom-otp-input-sample:nth-child(5) {
-        border-top-left-radius: 12px;
-        border-bottom-left-radius: 12px;
+    .custom-otp-input-sample:nth-child(3),
+    .custom-otp-input-sample:last-child {
+      border-top-right-radius: 12px;
+      border-bottom-right-radius: 12px;
+      border-right-width: 1px;
+      border-right-style: solid;
     }
-    .field-container{
-        height: 230px;
+    .otp-buttons .p-button {
+      width: 135px;
     }
-    .otp-container{
-        padding: 35px 0px 0px;
-        input {
-            margin: 7px 0px 35px;
-        }
-        .p-inputotp div{
-            padding: 0px 27px;
-            top: -12px;
-            position: relative;
-        }
-        .custom-otp-input-sample:nth-child(3), .custom-otp-input-sample:last-child {
-            border-top-right-radius: 12px;
-            border-bottom-right-radius: 12px;
-            border-right-width: 1px;
-            border-right-style: solid;
-        }
-        .otp-buttons .p-button{
-            width: 135px;
-        }
-        .otp-buttons .p-button:last-child{
-            float: right;
-            width: 100%;
-        }
-        .otp-buttons .p-button:first-child{
-            background-color: white;
-            float: left;
-            text-align: left;
-            padding: 0px;
-        }
-        div p:first-child{
-            margin: 0px 0px 5px;
-            font-size: 13px;
-        }
-        div p:last-of-type{
-            margin: 0px 0px 20px;
-            font-size: 13px;
-        }
+    .otp-buttons .p-button:last-child {
+      float: right;
+      width: 100%;
     }
-    .forgot-password{
-        color: blue;
-        position: absolute;
-        bottom: 3px;
-        font-size: 11px;
-        text-decoration: underline;
-        cursor: pointer;
+    .otp-buttons .p-button:first-child {
+      background-color: white;
+      float: left;
+      text-align: left;
+      padding: 0px;
     }
-    .forgot-password.alreadyexist{
-        color: red;
-        text-decoration: none;
+    div p:first-child {
+      margin: 0px 0px 5px;
+      font-size: 13px;
     }
-    .field.password-panel{
-        position: relative;
+    div p:last-of-type {
+      margin: 0px 0px 20px;
+      font-size: 13px;
     }
-    .field-container.hide-form{
-        display: none;
-    }
-    .log-in-btn.p-button .p-button-label {
-        font-size: 12px;
-        transition: none;
-    }
-    .log-in-btn.p-button:focus {
-        box-shadow: none;
-    }
+  }
+  .forgot-password {
+    color: blue;
+    position: absolute;
+    bottom: 3px;
+    font-size: 11px;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  .forgot-password.alreadyexist {
+    color: red;
+    text-decoration: none;
+  }
+  .field.password-panel {
+    position: relative;
+  }
+  .field-container.hide-form {
+    display: none;
+  }
+  .log-in-btn.p-button .p-button-label {
+    font-size: 12px;
+    transition: none;
+  }
+  .log-in-btn.p-button:focus {
+    box-shadow: none;
+  }
 }

@@ -27,6 +27,8 @@ import { Dialog } from "primereact/dialog";
 import { Dropdown } from "primereact/dropdown";
 import { InputNumber } from "primereact/inputnumber";
 import { useNavigate } from "react-router-dom";
+import { MultiSelect } from "primereact/multiselect";
+
 import "./dashboard.css";
 
 let addProductArray = [];
@@ -38,12 +40,12 @@ export default function DashboardNew() {
 
   const navigate = useNavigate();
 
-
   const [products, setProducts] = useState([]);
   const [editProducts, setEditProducts] = useState([]);
 
   const [filters, setFilters] = useState({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+    category: { value: null, matchMode: FilterMatchMode.IN },
   });
   const [editFilters, setEditFilters] = useState({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -63,13 +65,22 @@ export default function DashboardNew() {
   const [productName, setProductName] = useState("");
   const [productToDelete, setProductToDelete] = useState("");
 
-  const categories = [
+  const category = [
     { name: "Gin", code: "Gin" },
     { name: "Rum", code: "Rum" },
     { name: "Cider", code: "Cider" },
     { name: "Beer", code: "Beer" },
   ];
-  const [selectedCategory, setSelectedCategory] = useState(categories[0]);
+
+  const [representatives] = useState([
+    { name: "Amy Elsner", image: "amyelsner.png" },
+    { name: "Beer", image: "beer.png" },
+    { name: "Gin", image: "gin.png" },
+    { name: "Rum", image: "rum.png" },
+    { name: "Cider", image: "cider.png" },
+  ]);
+
+  const [selectedCategory, setSelectedCategory] = useState(category[0]);
 
   const measurements = [
     { name: "Liter", code: "Liter" },
@@ -99,6 +110,12 @@ export default function DashboardNew() {
 
   useEffect(() => {
     axios.get("getGridData").then((response) => {
+      console.log(response.data, "++");
+
+      response.data.map((i, idx) => {
+        console.log(i, ";;");
+        i.category = { name: i.category, code: i.category };
+      });
       setProducts(response.data);
       setEditProducts(response.data);
       wrongUrlArray = [];
@@ -226,7 +243,7 @@ export default function DashboardNew() {
 
       let addProductObj = {
         productName: productName,
-        category: selectedCategory.name,
+        category: selectedCategory,
         quantity: quantity,
         measurement: selectedMeasurement.name,
         shopName: shopName,
@@ -255,7 +272,7 @@ export default function DashboardNew() {
 
     addProductArray.map((i, idx) => {
       i.productName = productName;
-      i.category = selectedCategory.name;
+      i.category = selectedCategory;
       i.quantity = quantity;
       i.measurement = selectedMeasurement.name;
 
@@ -346,7 +363,7 @@ export default function DashboardNew() {
 
     addProductArray.map((i, idx) => {
       i.productName = productName;
-      i.category = selectedCategory.name;
+      i.category = selectedCategory;
       i.quantity = quantity;
       i.measurement = selectedMeasurement.name;
       i.tag = editProductTag;
@@ -445,7 +462,7 @@ export default function DashboardNew() {
     setEditProductTag(1);
 
     setProductName("");
-    setSelectedCategory(categories[0]);
+    setSelectedCategory(category[0]);
     setQuantity(1);
     setSelectedMeasurement(measurements[0]);
 
@@ -464,7 +481,7 @@ export default function DashboardNew() {
     setAddProductDialogBoxvisible(false);
 
     setProductName("");
-    setSelectedCategory(categories[0]);
+    setSelectedCategory(category[0]);
     setQuantity(1);
     setSelectedMeasurement(measurements[0]);
 
@@ -493,7 +510,7 @@ export default function DashboardNew() {
   const editProduct = (product) => {
     setEditProductDialog(true);
 
-    const category = getCategoryByCode(categories, product.category);
+    const category = getCategoryByCode(category, product.category);
     const measurement = getCategoryByCode(measurements, product.measurement);
 
     console.log(product, "?? PRODUCT", category);
@@ -593,6 +610,41 @@ export default function DashboardNew() {
     </div>
   );
 
+  const representativeBodyTemplate = (rowData) => {
+    const representative = rowData.category.name;
+
+    return (
+      <div className="flex align-items-center gap-2">
+        <span>{representative}</span>
+      </div>
+    );
+  };
+
+  const representativesItemTemplate = (option) => {
+    return (
+      <div className="flex align-items-center gap-2">
+        <span>{option.name}</span>
+      </div>
+    );
+  };
+
+  const representativeFilterTemplate = (options) => {
+    return (
+      <React.Fragment>
+        {/* <div className="mb-3 font-bold">Category</div> */}
+        <MultiSelect
+          value={options.value}
+          options={category}
+          itemTemplate={representativesItemTemplate}
+          onChange={(e) => options.filterCallback(e.value)}
+          optionLabel="name"
+          placeholder="Choose Categories"
+          className="p-column-filter"
+        />
+      </React.Fragment>
+    );
+  };
+
   console.log(wrongUrlArray, ">> RENDER");
 
   return (
@@ -612,7 +664,7 @@ export default function DashboardNew() {
 
         <Button
           label="Sign Out"
-          onClick={() => navigate('/')}
+          onClick={() => navigate("/")}
           className="addProductBtn"
         />
       </div>
@@ -657,7 +709,7 @@ export default function DashboardNew() {
                 <Dropdown
                   value={selectedCategory}
                   onChange={(e) => setSelectedCategory(e.value)}
-                  options={categories}
+                  options={category}
                   optionLabel="name"
                   placeholder="Select Category"
                   className="addProductDropdown"
@@ -956,7 +1008,7 @@ export default function DashboardNew() {
                 <Dropdown
                   value={selectedCategory}
                   onChange={(e) => setSelectedCategory(e.value)}
-                  options={categories}
+                  options={category}
                   optionLabel="name"
                   placeholder="Select Category"
                   className="addProductDropdown"
@@ -1145,6 +1197,7 @@ export default function DashboardNew() {
 
       {/* EDIT - END */}
 
+      {console.log(products, "?/")}
       <DataTable
         value={products}
         filters={filters}
@@ -1164,9 +1217,15 @@ export default function DashboardNew() {
 
         <Column field="size" header="Size" style={{ width: "10%" }}></Column>
         <Column
-          field="category"
+          // field="category"
           header="Category"
+          filterField="category"
           style={{ width: "10%" }}
+          showFilterMatchModes={false}
+          filterMenuStyle={{ width: "14rem" }}
+          body={representativeBodyTemplate}
+          filter
+          filterElement={representativeFilterTemplate}
         ></Column>
         <Column
           header={
