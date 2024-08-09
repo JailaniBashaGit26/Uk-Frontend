@@ -43,7 +43,15 @@ function SignIn() {
     const showWarn = (msg) => {
         toast.current.show({ severity: 'warn', summary: 'Warning', detail: msg, life: 3000 });
     };
-
+    const validatePassword = (password) => {
+        const hasUpperCase = /[A-Z]/.test(password);
+        const hasLowerCase = /[a-z]/.test(password);
+        const hasDigit = /\d/.test(password);
+        const hasSpecialChar = /[!@#$%^&*()_+{}\[\]:;"'<>,.?~\\/-]/.test(password);
+        const hasMinLength = password.length >= 8;
+      
+        return hasUpperCase && hasLowerCase && hasDigit && hasSpecialChar && hasMinLength;
+      };
     const onSubmit = (data) => {
         setShowErrorMsg(false);
         if (data.name && data.password) {
@@ -53,17 +61,21 @@ function SignIn() {
                 username : data.name,
                 password : data.password
             }
-            setLoading(true);
-            AuthService.SendEmail(userData).then(x=> {
-                setLoading(false);
-                if(x === 'success')
-                    setShowOtp(true);
-                else
-                    {
-                        setShowOtp(false);
-                        showWarn('User already exist. please log in.');
-                    }
-            });
+            if(validatePassword(data.password)){
+                setLoading(true);
+                AuthService.SendEmail(userData).then(x=> {
+                    setLoading(false);
+                    if(x === 'success')
+                        setShowOtp(true);
+                    else
+                        {
+                            setShowOtp(false);
+                            showWarn('User already exist. please log in.');
+                        }
+                });
+            } else {
+                showWarn('Password must be at least 8 characters and include an uppercase, a lowercase, a number, and a special character.');
+            }
         }
         // reset();
     };
@@ -93,14 +105,14 @@ function SignIn() {
                 <div className="right-panel">
                     <div className="title-section">
                         <h5>Welcome</h5>
-                        <h2>Sign in to your account</h2>
+                        <h2>Register to your account</h2>
                     </div>
                     <div className="form-container">
                         {!showOtp &&
                             <div className="field-container">
                                 <form onSubmit={handleSubmit(onSubmit)} className="p-fluid">
                                     <div className="field">
-                                        <label htmlFor="name" className={classNames({ 'p-error': errors.name })}>Email</label>
+                                        <label htmlFor="name" className={classNames({ 'p-error': errors.name })}>Enter your email</label>
                                         <Controller
                                             name="name"
                                             control={control}
@@ -116,7 +128,7 @@ function SignIn() {
                                         />
                                     </div>
                                     <div className="field password-panel">
-                                        <label htmlFor="password" className={classNames({ 'p-error': errors.password })}>Password</label>
+                                        <label htmlFor="password" className={classNames({ 'p-error': errors.password })}>Enter your password</label>
                                         <Controller
                                             name="password"
                                             control={control}
@@ -134,7 +146,7 @@ function SignIn() {
                                         />
                                          {showErrorMsg && <span className="forgot-password alreadyexist">User already exist</span>}
                                     </div>
-                                    <Button  disabled={loading} type="submit" label={loading ? null : "Sign In" } className="mt-2" >{loading && <ProgressSpinner style={{ width: '2rem', height: '2rem' }} />}</Button>
+                                    <Button  disabled={loading} type="submit" label={loading ? null : "Sign Up" } className="mt-2" >{loading && <ProgressSpinner style={{ width: '2rem', height: '2rem' }} />}</Button>
                                 </form>
                             </div>}
                         {showOtp &&

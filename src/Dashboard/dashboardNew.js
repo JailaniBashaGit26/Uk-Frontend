@@ -26,7 +26,7 @@ import { Dialog } from "primereact/dialog";
 
 import { Dropdown } from "primereact/dropdown";
 import { InputNumber } from "primereact/inputnumber";
-
+import { useNavigate } from "react-router-dom";
 import "./dashboard.css";
 
 let addProductArray = [];
@@ -35,6 +35,9 @@ let wrongUrlArray = [];
 export default function DashboardNew() {
   const toast = useRef(null);
   const msgs = useRef(null);
+
+  const navigate = useNavigate();
+
 
   const [products, setProducts] = useState([]);
   const [editProducts, setEditProducts] = useState([]);
@@ -604,6 +607,12 @@ export default function DashboardNew() {
         <Button
           label="Add Product"
           onClick={() => setAddProductDialogBoxvisible(true)}
+          className="addProductBtn"
+        />
+
+        <Button
+          label="Sign Out"
+          onClick={() => navigate('/')}
           className="addProductBtn"
         />
       </div>

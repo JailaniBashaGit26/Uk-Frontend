@@ -184,7 +184,7 @@ function LogInpage() {
                         <Divider layout="horizontal" className="flex md:hidden" align="center">
                             <b>OR</b>
                         </Divider>
-                        <Button type="button" label="Sign In" className="mt-2 log-in-btn" onClick={() => navigate('/signinpage')} />
+                        <Button type="button" label="Sign Up" className="mt-2 log-in-btn" onClick={() => navigate('/signinpage')} />
                     </div>
                 </div>
             </div>
