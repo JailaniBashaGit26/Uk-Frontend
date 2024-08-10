@@ -72,6 +72,13 @@ export default function DashboardNew() {
     { name: "Beer", code: "Beer" },
   ];
 
+  const categoryList = [
+    { name: "Gin", code: "Gin" },
+    { name: "Rum", code: "Rum" },
+    { name: "Cider", code: "Cider" },
+    { name: "Beer", code: "Beer" },
+  ];
+
   const [representatives] = useState([
     { name: "Amy Elsner", image: "amyelsner.png" },
     { name: "Beer", image: "beer.png" },
@@ -110,10 +117,7 @@ export default function DashboardNew() {
 
   useEffect(() => {
     axios.get("getGridData").then((response) => {
-      console.log(response.data, "++");
-
       response.data.map((i, idx) => {
-        console.log(i, ";;");
         i.category = { name: i.category, code: i.category };
       });
       setProducts(response.data);
@@ -224,8 +228,6 @@ export default function DashboardNew() {
   };
 
   const productUrlOnBlur = (e, shopName) => {
-    console.log(e.target.value, "??", shopName);
-
     let userEnteredValue = e.target.value.replace(/ /g, "");
 
     if (
@@ -270,90 +272,100 @@ export default function DashboardNew() {
     wrongUrlArray = [];
     msgs.current.clear();
 
-    addProductArray.map((i, idx) => {
-      i.productName = productName;
-      i.category = selectedCategory;
-      i.quantity = quantity;
-      i.measurement = selectedMeasurement.name;
-
-      switch (i.shopName) {
-        case "ASDA":
-          if (!i.url.startsWith("https://groceries.asda.com/"))
-            wrongUrlArray.push(i.shopName);
-          break;
-
-        case "Morrisons":
-          if (!i.url.startsWith("https://groceries.morrisons.com/"))
-            wrongUrlArray.push(i.shopName);
-          break;
-
-        case "Sainsburys":
-          if (!i.url.startsWith("https://www.sainsburys.co.uk/"))
-            wrongUrlArray.push(i.shopName);
-          break;
-
-        case "Tesco":
-          if (!i.url.startsWith("https://www.tesco.com/"))
-            wrongUrlArray.push(i.shopName);
-          break;
-
-        case "WaitRose":
-          if (!i.url.startsWith("https://www.waitrose.com/ecom/"))
-            wrongUrlArray.push(i.shopName);
-          break;
-
-        case "Ocado":
-          if (!i.url.startsWith("https://www.ocado.com/"))
-            wrongUrlArray.push(i.shopName);
-          break;
-
-        case "CoOp":
-          if (!i.url.startsWith("https://www.coop.co.uk/"))
-            wrongUrlArray.push(i.shopName);
-          break;
-
-        case "Amazon":
-          if (!i.url.startsWith("https://www.amazon.co.uk/"))
-            wrongUrlArray.push(i.shopName);
-          break;
-      }
-    });
-
-    console.log(wrongUrlArray, "!!", addProductArray);
-
-    if (wrongUrlArray.length > 0) {
+    if (productName.trim().length === 0) {
       msgs.current.show([
         {
           sticky: true,
           severity: "error",
-          summary: "Wrong Url : ",
-          detail: wrongUrlArray.join(", "),
+          summary: "Product Name is Missing ",
           closable: false,
         },
       ]);
     } else {
-      setWebLoadingGif(true);
+      addProductArray.map((i, idx) => {
+        i.productName = productName;
+        i.category = selectedCategory.name;
+        i.quantity = quantity;
+        i.measurement = selectedMeasurement.name;
 
-      axios
-        .post("/insertProductMasterData", addProductArray)
-        .then((response) => {
-          console.log(response, " !! POST DATA");
+        switch (i.shopName) {
+          case "ASDA":
+            if (!i.url.startsWith("https://groceries.asda.com/"))
+              wrongUrlArray.push(i.shopName);
+            break;
 
-          if (response.data) {
-            toast.current.show({
-              severity: "success",
-              summary: "Success",
-              detail: "Successfully added",
-              life: 3000,
-            });
+          case "Morrisons":
+            if (!i.url.startsWith("https://groceries.morrisons.com/"))
+              wrongUrlArray.push(i.shopName);
+            break;
 
-            axios.get("getGridData").then((response) => {
-              setProducts(response.data);
-              setEditProducts(response.data);
-              setWebLoadingGif(false);
-            });
-          }
-        });
+          case "Sainsburys":
+            if (!i.url.startsWith("https://www.sainsburys.co.uk/"))
+              wrongUrlArray.push(i.shopName);
+            break;
+
+          case "Tesco":
+            if (!i.url.startsWith("https://www.tesco.com/"))
+              wrongUrlArray.push(i.shopName);
+            break;
+
+          case "WaitRose":
+            if (!i.url.startsWith("https://www.waitrose.com/ecom/"))
+              wrongUrlArray.push(i.shopName);
+            break;
+
+          case "Ocado":
+            if (!i.url.startsWith("https://www.ocado.com/"))
+              wrongUrlArray.push(i.shopName);
+            break;
+
+          case "CoOp":
+            if (!i.url.startsWith("https://www.coop.co.uk/"))
+              wrongUrlArray.push(i.shopName);
+            break;
+
+          case "Amazon":
+            if (!i.url.startsWith("https://www.amazon.co.uk/"))
+              wrongUrlArray.push(i.shopName);
+            break;
+        }
+      });
+
+      if (wrongUrlArray.length > 0) {
+        msgs.current.show([
+          {
+            sticky: true,
+            severity: "error",
+            summary: "Wrong Url : ",
+            detail: wrongUrlArray.join(", "),
+            closable: false,
+          },
+        ]);
+      } else {
+        setWebLoadingGif(true);
+
+        axios
+          .post("/insertProductMasterData", addProductArray)
+          .then((response) => {
+            if (response.data) {
+              toast.current.show({
+                severity: "success",
+                summary: "Success",
+                detail: "Successfully added",
+                life: 3000,
+              });
+
+              axios.get("getGridData").then((response) => {
+                response.data.map((i, idx) => {
+                  i.category = { name: i.category, code: i.category };
+                });
+                setProducts(response.data);
+                setEditProducts(response.data);
+                setWebLoadingGif(false);
+              });
+            }
+          });
+      }
     }
   };
 
@@ -361,100 +373,112 @@ export default function DashboardNew() {
     wrongUrlArray = [];
     msgs.current.clear();
 
-    addProductArray.map((i, idx) => {
-      i.productName = productName;
-      i.category = selectedCategory;
-      i.quantity = quantity;
-      i.measurement = selectedMeasurement.name;
-      i.tag = editProductTag;
-      i.no = editProductNo;
+    console.log(addProductArray, "##");
 
-      switch (i.shopName) {
-        case "ASDA":
-          if (!i.url.startsWith("https://groceries.asda.com/"))
-            wrongUrlArray.push(i.shopName);
-          break;
-
-        case "Morrisons":
-          if (!i.url.startsWith("https://groceries.morrisons.com/"))
-            wrongUrlArray.push(i.shopName);
-          break;
-
-        case "Sainsburys":
-          if (!i.url.startsWith("https://www.sainsburys.co.uk/"))
-            wrongUrlArray.push(i.shopName);
-          break;
-
-        case "Tesco":
-          if (!i.url.startsWith("https://www.tesco.com/"))
-            wrongUrlArray.push(i.shopName);
-          break;
-
-        case "WaitRose":
-          if (!i.url.startsWith("https://www.waitrose.com/ecom/"))
-            wrongUrlArray.push(i.shopName);
-          break;
-
-        case "Ocado":
-          if (!i.url.startsWith("https://www.ocado.com/"))
-            wrongUrlArray.push(i.shopName);
-          break;
-
-        case "CoOp":
-          if (!i.url.startsWith("https://www.coop.co.uk/"))
-            wrongUrlArray.push(i.shopName);
-          break;
-
-        case "Amazon":
-          if (!i.url.startsWith("https://www.amazon.co.uk/"))
-            wrongUrlArray.push(i.shopName);
-          break;
-      }
-    });
-
-    console.log(addProductArray, ">> ARRAY");
-
-    if (wrongUrlArray.length > 0) {
+    if (productName.trim().length === 0) {
       msgs.current.show([
         {
           sticky: true,
           severity: "error",
-          summary: "Wrong Url : ",
-          detail: wrongUrlArray.join(", "),
+          summary: "Product Name is Missing ",
           closable: false,
         },
       ]);
     } else {
-      setWebLoadingGif(true);
+      addProductArray.map((i, idx) => {
+        console.log(selectedCategory, "!!@!", i);
 
-      axios
-        .post("/editProductMasterByTag", addProductArray)
-        .then((response) => {
-          console.log(response, " !! POST DATA");
+        i.productName = productName;
+        i.category = selectedCategory.name;
+        i.quantity = quantity;
+        i.measurement = selectedMeasurement.name;
+        i.tag = editProductTag;
+        i.no = editProductNo;
 
-          if (response.data) {
-            toast.current.show({
-              severity: "success",
-              summary: "Success",
-              detail: "Successfully added",
-              life: 3000,
-            });
+        switch (i.shopName) {
+          case "ASDA":
+            if (!i.url.startsWith("https://groceries.asda.com/"))
+              wrongUrlArray.push(i.shopName);
+            break;
 
-            axios.get("getGridData").then((response) => {
-              setProducts(response.data);
-              setEditProductTag(0);
-              setEditProductNo(0);
-              setWebLoadingGif(false);
-            });
-          }
-        });
+          case "Morrisons":
+            if (!i.url.startsWith("https://groceries.morrisons.com/"))
+              wrongUrlArray.push(i.shopName);
+            break;
+
+          case "Sainsburys":
+            if (!i.url.startsWith("https://www.sainsburys.co.uk/"))
+              wrongUrlArray.push(i.shopName);
+            break;
+
+          case "Tesco":
+            if (!i.url.startsWith("https://www.tesco.com/"))
+              wrongUrlArray.push(i.shopName);
+            break;
+
+          case "WaitRose":
+            if (!i.url.startsWith("https://www.waitrose.com/ecom/"))
+              wrongUrlArray.push(i.shopName);
+            break;
+
+          case "Ocado":
+            if (!i.url.startsWith("https://www.ocado.com/"))
+              wrongUrlArray.push(i.shopName);
+            break;
+
+          case "CoOp":
+            if (!i.url.startsWith("https://www.coop.co.uk/"))
+              wrongUrlArray.push(i.shopName);
+            break;
+
+          case "Amazon":
+            if (!i.url.startsWith("https://www.amazon.co.uk/"))
+              wrongUrlArray.push(i.shopName);
+            break;
+        }
+      });
+
+      if (wrongUrlArray.length > 0) {
+        msgs.current.show([
+          {
+            sticky: true,
+            severity: "error",
+            summary: "Wrong Url : ",
+            detail: wrongUrlArray.join(", "),
+            closable: false,
+          },
+        ]);
+      } else {
+        setWebLoadingGif(true);
+
+        axios
+          .post("/editProductMasterByTag", addProductArray)
+          .then((response) => {
+            if (response.data) {
+              toast.current.show({
+                severity: "success",
+                summary: "Success",
+                detail: "Successfully added",
+                life: 3000,
+              });
+
+              axios.get("getGridData").then((response) => {
+                response.data.map((i, idx) => {
+                  i.category = { name: i.category, code: i.category };
+                });
+                setProducts(response.data);
+                setEditProductTag(0);
+                setEditProductNo(0);
+                setWebLoadingGif(false);
+              });
+            }
+          });
+      }
     }
   };
 
   const header = renderHeader();
   const editHeader = renderEditHeader();
-
-  console.log(addProductArray, ">>");
 
   const closeActualEditProductDialogBox = () => {
     setEditProductDialog(false);
@@ -510,16 +534,16 @@ export default function DashboardNew() {
   const editProduct = (product) => {
     setEditProductDialog(true);
 
-    const category = getCategoryByCode(category, product.category);
+    console.log(product.category, ">> #1", product.category.name);
+    const category = getCategoryByCode(categoryList, product.category);
+    console.log(category, ">> #2");
     const measurement = getCategoryByCode(measurements, product.measurement);
-
-    console.log(product, "?? PRODUCT", category);
 
     setEditProductTag(product.tag);
     setEditProductNo(product.no);
 
     setProductName(product.productName);
-    setSelectedCategory(category);
+    setSelectedCategory(product.category);
     setQuantity(product.quantity);
     setSelectedMeasurement(measurement);
 
@@ -574,6 +598,9 @@ export default function DashboardNew() {
       .then((hideProductResponse) => {
         if (hideProductResponse.data) {
           axios.get("getGridData").then((response) => {
+            response.data.map((i, idx) => {
+              i.category = { name: i.category, code: i.category };
+            });
             setProducts(response.data);
             setEditProducts(response.data);
           });
@@ -920,6 +947,7 @@ export default function DashboardNew() {
           closeEditProductDialogBox();
         }}
       >
+        {console.log(editProducts, "$@$")}
         <DataTable
           value={editProducts}
           filters={editFilters}
@@ -938,9 +966,10 @@ export default function DashboardNew() {
 
           <Column field="size" header="Size" style={{ width: "10%" }}></Column>
           <Column
-            field="category"
+            // field="category"
             header="Category"
             style={{ width: "10%" }}
+            body={representativeBodyTemplate}
           ></Column>
           <Column
             body={actionBodyTemplate}
@@ -1005,6 +1034,7 @@ export default function DashboardNew() {
                 Category
               </Col>
               <Col xl={8} lg={8} md={8} sm={8} xs={8}>
+                {console.log(selectedCategory, "%%")}
                 <Dropdown
                   value={selectedCategory}
                   onChange={(e) => setSelectedCategory(e.value)}
@@ -1197,7 +1227,6 @@ export default function DashboardNew() {
 
       {/* EDIT - END */}
 
-      {console.log(products, "?/")}
       <DataTable
         value={products}
         filters={filters}
